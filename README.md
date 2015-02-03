@@ -1,4 +1,4 @@
-# Atom App Example
+# Atoms App Example
 
 ## 1. Nuevo proyecto
 Vamos a http://atoms.tapquo.com y creamos un nuevo proyecto. En este ejemplo, crearemos una app en la que podamos añadir un nuevo contacto y listarlos.
@@ -11,7 +11,7 @@ En esta primera aproximación nuestra app contendrá un artículo y dos seccione
 ## 2.1. Organism / Molecule / Atom
 ![image](assets/img/screen-2.png)
 
-Para crear el *Header* que vemos en la imagen comenzamos arrastrando un **Article** del grupo de *Elements* que se encuentra abajo a la izqierda del IDE. A continuación, podemos hacer doble click o arrastrar un **Organism Header** al cual añadiremos un **Atom Heading** con el título de la app. Este título lo podemos editar a la derecha del IDE en la casilla **Value**.
+Para crear el *Header* que vemos en la imagen comenzamos arrastrando un **Article** del grupo de *Elements* que se encuentra abajo a la izquierda del IDE. A continuación, podemos hacer doble click o arrastrar un **Organism Header** al cual añadiremos un **Atom Heading** con el título de la app. Este título lo podemos editar a la derecha del IDE en la casilla **Value**.
 
 A continuación, nos volvemos a posicionar sobre el *Organism Header* desde el árbol de elementos para añadir dos **Molecules Navigation** que contendrán los botones que nos llevarán a las distintas secciones.
 
