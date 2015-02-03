@@ -1,0 +1,53 @@
+children:
+  - Organism.Header:
+      children:
+        - Atom.Heading:
+            size: h1
+            value: Contacts
+        - Molecule.Navigation:
+            children:
+              - Atom.Button:
+                  events:
+                    - touch
+                  icon: menu
+            style: left
+        - Molecule.Navigation:
+            children:
+              - Atom.Button:
+                  events:
+                    - touch
+                  icon: add-user
+            style: right
+  - Organism.Section:
+      children:
+        - Molecule.List:
+            children: []
+            bind:
+              entity: __.Entity.Contact
+              atom: Li
+              create: true
+              update: true
+              destroy: true
+      id: list
+  - Organism.Section:
+      children:
+        - Molecule.Form:
+            children:
+              - Atom.Input:
+                  type: text
+                  name: name
+                  placeholder: Name...
+              - Atom.Input:
+                  type: number
+                  placeholder: Phone Number...
+                  name: phone
+              - Atom.Button:
+                  events:
+                    - touch
+                  style: fluid accept
+                  text: Save
+            events:
+              - submit
+      style: padding
+      id: form
+id: contact

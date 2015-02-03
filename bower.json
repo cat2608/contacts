@@ -1,0 +1,8 @@
+{
+    "name": "contacts",
+    "dependencies": {
+        "atoms" : "*",
+        "atoms-icons" : "*",
+        "hope" : "*"
+    }
+}

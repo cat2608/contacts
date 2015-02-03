@@ -1,0 +1,16 @@
+{
+  "version"       : "1.0.0",
+  "name"          : "contacts",
+  "description"   : "contact list",
+  "launch_path"   : "/host/index.html",
+  "icons": {
+    "16"          : "/host/assets/images/icon-57.png",
+    "48"          : "/host/assets/images/icon-57.png",
+    "128"         : "/host/assets/images/icon-144.png"
+  },
+  "developer": {
+    "name"        : "Atoms Developer",
+    "url"         : "http://atoms.tapquo.com"
+  },
+  "default_locale": "en"
+}
