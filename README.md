@@ -1,21 +1,21 @@
 # Atom App Example
 
 ## 1. Nuevo proyecto
-Vamos a http://atoms.tapquo.com y creamos un nuevo proyecto. En este ejemplo, crearemos una app en la que podamos añadir un nuevo contactos y listarlos.
+Vamos a http://atoms.tapquo.com y creamos un nuevo proyecto. En este ejemplo, crearemos una app en la que podamos añadir un nuevo contacto y listarlos.
 
 ![image](assets/img/screen-1.png)
 
 ## 2. Diseño
-En esta primera aproximación nuestra app contendrá un artículo y dos secciones: en una de las secciones se listarán los contactos. Posteriormente, añadiremos mediante código una **molecule search**. En la segunda sección estará la **molecule form** con la que añadiremos nuevos contactos.
+En esta primera aproximación nuestra app contendrá un artículo y dos secciones: en una de las secciones se listarán los contactos. Posteriormente, añadiremos mediante código una **Molecule Search**. En la segunda sección estará la **Molecule Form** con la que añadiremos nuevos contactos.
 
 ## 2.1. Organism / Molecule / Atom
 ![image](assets/img/screen-2.png)
 
 Para crear el *Header* que vemos en la imagen comenzamos arrastrando un **Article** del grupo de *Elements* que se encuentra abajo a la izqierda del IDE. A continuación, podemos hacer doble click o arrastrar un **Organism Header** al cual añadiremos un **Atom Heading** con el título de la app. Este título lo podemos editar a la derecha del IDE en la casilla **Value**.
 
-A continuación, nos volvemos a posicionar en el *Organism Header* para añadir dos **Molecules Navigation** que contendrán los botones que nos llevarán a las distintas secciones.
+A continuación, nos volvemos a posicionar sobre el *Organism Header* desde el árbol de elementos para añadir dos **Molecules Navigation** que contendrán los botones que nos llevarán a las distintas secciones.
 
-En este ejemplo para posicionar cada botón en un lado, debemos decir a la *Molecule Navigation* que llevará el estilo *left* en un caso y *right* en el otro:
+En este ejemplo para posicionar cada botón a un lado, debemos decir a la *Molecule Navigation* que llevará el estilo *left* en un caso y *right* en el otro:
 
 ![image](assets/img/screen-3.png)
 
@@ -27,13 +27,13 @@ Como has podido observar, cada vez que nos posicionamos en un elemento del árbo
 
 ## 2.2. Sections
 
-Como hemos dicho anteriormente, nuestra app contendrá dos secciones. Para ello, nos posicionamos en el *Organism Article* del árbol para poder seleccionar el **Organism Section**.
+Como hemos dicho anteriormente, nuestra app contendrá dos secciones. Para ello, nos posicionamos sobre el *Organism Article* del árbol para poder seleccionar el **Organism Section**.
 
 Este organismo permite unos cuantos elementos más. Debido a que esta vista será para listar nuestros contactos, arrastraremos al *Section* un **Molecule List**.
 
 ![image](assets/img/screen-5.png)
 
-Habrás podido observar que la *Molecule List* contiene varios parámetros que podemos configurar. De momento configuraremos los valores que ves en la imagen y más adelante explicaremos qué representan. De todas formas, en este [enlace](https://github.com/soyjavi/atoms-documentation/tree/master/ES) encontrarás la documentación necesaria para identificar estos parámetros.
+Habrás podido observar que la *Molecule List* contiene varios parámetros que podemos configurar. De momento configuraremos los valores que ves en la imagen pero más adelante explicaremos qué representan. De todas formas, en este [enlace](https://github.com/soyjavi/atoms-documentation/tree/master/ES) encontrarás la documentación necesaria para identificar estos parámetros.
 
 Recordemos que podemos ir guardando nuestro trabajo pinchando en el icono de la nube arriba a la izquierda.
 
@@ -45,11 +45,11 @@ Para añadir el formulario a la sección nos posicionamos sobre ella en le árbo
 
 A la *Molecule Form* podemos añadir los **Atoms Input** y **Atoms Button**. De los distintos valores que acepta el *atom inpput* configuraremos los siguientes:
 
-![image](assets/img/screen-7.png)
-
 * **name**: campo requerido que identifica el input
 * **type**: tipo de dato del input (number, text, password...)
 * **placeholder**: descripción del input
+
+![image](assets/img/screen-7.png)
 
 Para que tu botón se vea ancho y de color verde como en este ejemplo, puedes poner en su campo *style* los valores *fluid accept*
 
@@ -58,9 +58,9 @@ Ya casi estamos listos :) Lo que podemos hacer a continuación es darle un poco 
 
 ## 2.3. Navegación
 
-Te habrás dado cuenta que en *Articles* y *Sections* es obligatorio asignarles una **ID**. Para este ejemplo elegimos asignar al article la ID *contact*. La section que contiene la lista se llamará *list* y la que contiene el formulario *form*.
+Te habrás dado cuenta que en *Articles* y *Sections* es obligatorio asignarles una **ID**. Para este ejemplo elegimos asignar al article el ID *contact*. La section que contiene la lista se llamará *list* y la que contiene el formulario *form*.
 
-Una vez signadas las IDs podemos establecer la navegación de los botones. Por ejemplo, si queremos que al pinchar en el botón *user-add* el usuario vaya al formulario, basta con elegir esa ruta en el campo **path** del botón tal y como se ve en la figura:
+Una vez signadas los IDs podemos establecer la navegación de los botones. Por ejemplo, si queremos que al pinchar en el botón *user-add* el usuario vaya al formulario, basta con elegir esa ruta en el campo **path** del botón tal y como se ve en la figura:
 
 ![image](assets/img/screen-8.png)
 
