@@ -76,11 +76,41 @@ Se nos deplegará un *dialog* que nos pedirá la ruta de arranque, es decir, deb
 
 Ahora damos a **Build & Export** y guardamos el zip que nos ha generado Atoms IDE.
 
+### 2.4.1. Estructura del proyecto
+Al descomrpimir el zip nos encontramos con la siguiente estructura de carpetas:
 
+```
+.
+├── source
+│   └── atoms
+│   └── entities
+│   └── molecules
+│   └── organisms
+│   └── style
+│   └── app.coffee
+│   └── app.proxy.coffee
+├── www
+│   └── assets
+│   └── index.html
+├── bower.json
+├── gulpfile.js
+├── package.json
+```
+En este momento ya podemos arrancar nuestra aplicación. Pero antes, debemos instalar las dependencias y los componentes declaramos en el *package.json* y *bower.json*:
 
+```bash
+$ npm install
+$ bower install
+```
+Ahora compilamos fichero con gulp y levantamos un servidor:
 
+```bash
+$ gulp init
+$ gulp
+```
 
+Al ejecutar el comando `gulp` se nos levantará un server en el puerto 8000. Comprobemos que tal se nos ve la app:
 
-
+![image](assets/img/screen-10.png)
 
 
