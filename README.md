@@ -133,14 +133,14 @@ class Atoms.Organism.Contact extends Atoms.Organism.Article
 new Atoms.Organism.Contact()
 ```
 
-El fichero coffee viene con dos funciones declaradas. Esto es porque hemos dejado el *seletec* del atributo **events** activado en los tres elementos y el nombre por defecto que le asigna Atoms cuando no personalizamos el callback es *onElementEvent*:
+El fichero coffee viene con dos funciones declaradas. Esto es porque hemos dejado el *select* del atributo **events** activado en los tres elementos y el nombre por defecto que le asigna Atoms cuando no personalizamos el callback es *onElementEvent*:
 
 ![image](assets/img/screen-11.png)
 
 #### 3.1.1. Capturando el evento
 Te invito a que pongas logs en la función *onFormSubmit* y veas qué nos llega al hacer click en **Save** en *event*, *dispatcher*, *hierarchy*.
 
-Si los analizas verás que lo elementos hablan por si solo pero te confirmo que *hierarchy* te dice por qué "padres" pasa el evento.
+Si los analizas verás que lo elementos hablan por si solos pero te confirmo que *hierarchy* te dice por qué "padres" pasa el evento.
 
 Para recuperar los datos del formulario, utiliza *dispatcher.value()*:
 
