@@ -114,7 +114,7 @@ Al ejecutar el comando `gulp` se nos levantará un server en el puerto 8000. Com
 ![image](assets/img/screen-10.png)
 
 ## 3. Code
-Es momento de interactuar con el scaffod y el coffee. Desde nuestro editor de código, vayamos a la carpeta **Ormanisms**. Al haber creado un único organismo *contact* vemos que solamente tenemos un fichero yaml que contiene el scaffold y el coffee que tendrá la lógica.
+Es momento de interactuar con el scaffod y el coffee. Desde nuestro editor de código, vamos a la carpeta **Organisms**. Al haber creado un único organismo *contact* vemos que solamente tenemos un fichero yaml que contiene el scaffold y el coffee que tendrá la lógica.
 
 ### 3.1. Coffee
 
@@ -133,16 +133,16 @@ class Atoms.Organism.Contact extends Atoms.Organism.Article
 new Atoms.Organism.Contact()
 ```
 
-El fichero coffee viene con dos funciones declaradas. Esto es porque hemos dejado el *select* del atributo **events** activado en los tres elementos y el nombre por defecto que le asigna Atoms cuando no personalizamos el callback es *onElementEvent*:
+El fichero coffee viene con dos funciones declaradas. Esto es porque hemos dejado el *select* del atributo **events** activado en los tres elementos (buttons y form) y el nombre por defecto que le asigna Atoms cuando no personalizamos el callback es *onElementEvent*:
 
 ![image](assets/img/screen-11.png)
 
 #### 3.1.1. Capturando el evento
-Te invito a que pongas logs en la función *onFormSubmit* y veas qué nos llega al hacer click en **Save** en *event*, *dispatcher*, *hierarchy*.
+Te invito a que pongas logs en la función **onFormSubmit** y veas qué nos llega al hacer click en **Save** en *event*, *dispatcher*, *hierarchy*.
 
 Si los analizas verás que lo elementos hablan por si solos pero te confirmo que *hierarchy* te dice por qué "padres" pasa el evento.
 
-Para recuperar los datos del formulario, utiliza *dispatcher.value()*:
+Puedes recuperar los datos del formulario con *dispatcher.value()*:
 
  ```coffee
   onFormSubmit: (event, dispatcher, hierarchy...) ->
@@ -151,5 +151,214 @@ Para recuperar los datos del formulario, utiliza *dispatcher.value()*:
 
 ![image](assets/img/screen-12.png)
 
+### 3.2. Backend
+Este ejemplo pretende enseñar el flujo de comunicación desde la app hasta el backend que porcesará y almacenará los datos del formulario. Para el manejo de servidores HTTP utilizaremos [ZENServer](https://github.com/soyjavi/zen-server) que se caracteriza por ser ligero en cuanto a dependencias.
+
+Para utilizar ZENServer lo instalamos de la siguiente manera:
+
+```bash
+$ npm install zenserver --save
+```
+
+#### 3.2.1. ZENServer
+Nuestro pequeño backend tendrá una API para guardar y devolver los contactos y utilizaremos MongoDB para la persistencia de los datos.
+
+Así, siguiendo la estructura de fichero que maneja ZENServer vamos a añadir a nuestro proyecto los siguiente ficheros y directorios:
+
+```
+.
+├── api
+│   └── contact.coffee
+├── common
+│   └── models
+│       └── contact.coffee
+├── environment
+│   └── dev.yml
+├── zen.js
+├── zen.yml
+```
+Añade el siguiente contenido a los fichero zen.js y zen.yml:
+
+*zen.js*:
+
+```js
+"use strict"
+require('zenserver').start();
+```
+*zen.yml*
+
+```yaml
+# -- RESTful services ----------------------------------------------------------
+api:
+  - contact
+
+# -- Environment ---------------------------------------------------------------
+environment: dev
+
+# -- CORS Properties -----------------------------------------------------------
+headers:
+  Access-Control-Allow-Origin: "*"
+  Access-Control-Allow-Credentials: true
+  Access-Control-Allow-Methods: GET,PUT,POST,DELETE
+  Access-Control-Max-Age: 1
+  Access-Control-Allow-Headers:
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD5
+    - Content-Type
+    - Date
+    - Api-Version
+    - Response-Time
+    - Authorization
+  Access-Control-Expose-Headers:
+    - api-version
+    - content-length
+    - content-md5
+    - content-type
+    - date
+    - request-id
+    - response-time
+```
+Para saber más sobre ZENServer, no olvides consultar su [documentación](https://github.com/soyjavi/zen-server/tree/master/documentation/ES) ;)
+
+Siguiendo con la configuración de los demás ficheros, nos queda establecer los datos del entorno dev. Así, *dev.yml* contiene la siguiente información:
+
+```yaml
+# -- General Info --------------------------------------------------------------
+host    : localhost
+port    : 8888
+timezone: Europe/Amsterdam
+
+# -- Services ------------------------------------------------------------------
+mongo:
+  - name    : primary
+    host    : 127.0.0.1
+    port    : 27017
+    db      : contact
+```
+Si tu MongoDB requiere autenticación, añade los campos `user` y `password` a `mongo`.
+
+#### 3.2.2. API y Modelo
+Empecemos a establecer los parámetros de nuestro modelo de Mongo. Para este ejemplo he querido hacerlo súper sencillo y por lo tanto mi modelo lo he configurado de la siguiente manera:
+
+```coffee
+"use strict"
+
+Hope    = require("zenserver").Hope
+Schema  = require("zenserver").Mongoose.Schema
+db      = require("zenserver").Mongo.connections.primary
+
+Contact = new Schema
+  name      : type: String
+  avatar    : type: String
+  phone     : type: Number
+  updated_at: type: Date
+  created_at: type: Date, default: Date.now
+
+# -- Static methods ------------------------------------------------------------
+Contact.statics.register = (parameters) ->
+  promise = new Hope.Promise()
+  today = new Date()
+  parameters.avatar = "http://robohash.org/#{today.getMilliseconds()}.png"
+  contact = db.model "Contact", Contact
+  new contact(parameters).save (error, value) -> promise.done error, value
+  promise
+
+Contact.statics.search = (filter) ->
+  promise = new Hope.Promise()
+  @find(filter).exec (error, value) -> promise.done error, value
+  promise
+
+# -- Static methods ------------------------------------------------------------
+Contact.methods.parse = ->
+  name      : @name
+  avatar    : @avatar
+  phone     : @phone
+  updated_at: @updated_at
+  created_at: @created_at
+
+exports = module.exports = db.model "Contact", Contact
+```
+Y mi fichero con los endpoints ha quedado así:
+
+```coffee
+"use strict"
+
+Contact = require "../common/models/contact"
+
+module.exports = (server) ->
+
+  server.get "/api/contact", (request, response) ->
+    Contact.search().then (error, result) ->
+      if error
+        response.json message: error.message, error.code
+      else
+        response.json contacts: (contact.parse() for contact in result)
 
 
+  server.post "/api/contact", (request, response) ->
+    if request.required ["name", "phone"]
+      Contact.register(request.parameters).then (error, result) ->
+        if error
+          response.json message: error.message, error.code
+        else
+          response.json contact: result.parse()
+```
+
+### 3.3. Vuelta al front
+Para comunicarnos con la API nos ayudaremos del fichero *app.proxy.coffee* que trae Atoms IDE. Para ese ejercicio nos bastará con configurar la url del server:
+
+```coffee
+...
+    $$.ajax
+      url         : "http://127.0.0.1:8888/api/#{method}"
+...
+```
+
+#### 3.3.1. Enviando los datos al servidor
+Ya podemos intentar enviar los datos de un contacto a la base de datos. Para ello debemos recuperar los datos del formulario y pasarlos al proxy:
+
+```coffee
+  onFormSubmit: (event, dispatcher, hierarchy...) ->
+    __.proxy("POST", "contact", dispatcher.value()).then (error, result) ->
+      console.log ">>", error, result
+```
+Ahora, con gulp corriendo en una terminal y en otra con el server levantado:
+
+```bash
+$ node zen zen
+```
+
+Vamos a ver qué pasa al completar el formulario y darle al *Save*:
+
+![image](assets/img/screen-13.png)
+
+Por lo que parece, todo ha ido bien. Si nos fijamos en la respuesta del server, éste nos devuelve un 200 a la llamada `POST` al endpoint `/api/contact`. Por otro lado vemos en el log de la consola del navegador que tenemos los datos del usuario. Construyamos entonces la nueva entidad.
+
+#### 3.3.2. Entity
+Para añadir a la lista el nuevo contacto creado, previamente debemos crear la **Entity Contact**. En la carpeta entity creamos el fichero *contact.coffee* y añadimos el siguiente contenido:
+
+```coffee
+"use strict"
+
+class __.Entity.Contact extends Atoms.Class.Entity
+
+  @fields "name", "phone", "avatar"
+
+  parse: ->
+    image       : @avatar
+    text        : @name
+    description : @phone
+```
+El template de un Atom Li acepta además de los atributos declarados en el parse el atributo *icon*. Lo puedes comprobar [aquí](https://github.com/tapquo/atoms-app/blob/master/atom/li.coffee).
+
+Recordemos que la *Molecule List* está suscrita a los eventos de **create**, **update** y **destroy** así que, para añadir el nuevo elemento a la lista, basta con llamar al método *create* de la Entity:
+
+```coffee
+  onFormSubmit: (event, dispatcher, hierarchy...) ->
+    __.proxy("POST", "contact", dispatcher.value()).then (error, value) ->
+      if value
+        __.Entity.Contact.create value.contact
+        Atoms.Url.path "contact/list"
+```

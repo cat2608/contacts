@@ -1,11 +1,11 @@
 {
-  "name"            : "contacts",
-  "version"         : "1.0.0",
-  "description"     : "Contact List",
-  "author"          : "undefined <undefined>",
-  "homepage"        : "http://tapquo.com",
-  "license"         : "MIT",
-  "devDependencies" : {
+  "name"        : "contacts",
+  "version"     : "1.0.0",
+  "description" : "Contact List",
+  "author"      : "Cata <cat2608@gmail.com>",
+  "homepage"    : "http://cataflu.com",
+  "license"     : "MIT",
+  "devDependencies": {
     "gulp"        : "*",
     "gulp-coffee" : "*",
     "gulp-concat" : "*",
@@ -16,5 +16,8 @@
     "gulp-uglify" : "*",
     "gulp-util"   : "*",
     "gulp-yml"    : "*"
+  },
+  "dependencies": {
+    "zenserver"   : "^1.1.26"
   }
 }

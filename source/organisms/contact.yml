@@ -1,3 +1,4 @@
+id: contact
 children:
   - Organism.Header:
       children:
@@ -21,16 +22,15 @@ children:
                   path: contact/form
             style: right
   - Organism.Section:
+      id: list
       children:
         - Molecule.List:
-            children: []
             bind:
               entity: __.Entity.Contact
-              atom: Li
+              atom: Atom.Li
               create: true
               update: true
               destroy: true
-      id: list
   - Organism.Section:
       children:
         - Molecule.Form:
@@ -52,4 +52,3 @@ children:
               - submit
       style: padding
       id: form
-id: contact

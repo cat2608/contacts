@@ -5,7 +5,7 @@ __.proxy = (type, method, parameters = {}, background = false) ->
     unless background then do __.Dialog.Loading.show
     token = if session? then session.token else null
     $$.ajax
-      url         : "#{method}"
+      url         : "http://127.0.0.1:8888/api/#{method}"
       type        : type
       data        : parameters
       contentType : "application/x-www-form-urlencoded"
