@@ -7,9 +7,12 @@ class Atoms.Organism.Contact extends Atoms.Organism.Article
   onButtonTouch: (event, dispatcher, hierarchy...) ->
     # Your code...
 
+  onAdd: (event, dispatcher, hierarchy...) ->
+    @form.new.clean()
+    Atoms.Url.path "contact/form"
+
   onFormSubmit: (event, dispatcher, hierarchy...) ->
     __.proxy("POST", "contact", dispatcher.value()).then (error, value) ->
-      console.log value
       if value
         __.Entity.Contact.create value.contact
         Atoms.Url.path "contact/list"

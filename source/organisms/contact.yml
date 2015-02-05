@@ -14,13 +14,14 @@ children:
                   path: contact/list
             style: left
         - Molecule.Navigation:
+            style: right
             children:
               - Atom.Button:
                   events:
                     - touch
                   icon: add-user
-                  path: contact/form
-            style: right
+                  callbacks:
+                    - onAdd
   - Organism.Section:
       id: list
       children:
@@ -32,8 +33,13 @@ children:
               update: true
               destroy: true
   - Organism.Section:
+      id: form
+      style: padding
       children:
         - Molecule.Form:
+            id: new
+            events:
+              - submit
             children:
               - Atom.Input:
                   type: text
@@ -48,7 +54,4 @@ children:
                     - touch
                   style: fluid accept
                   text: Save
-            events:
-              - submit
-      style: padding
-      id: form
+

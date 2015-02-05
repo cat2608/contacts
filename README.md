@@ -152,18 +152,18 @@ Puedes recuperar los datos del formulario con *dispatcher.value()*:
 ![image](assets/img/screen-12.png)
 
 ### 3.2. Backend
-Este ejemplo pretende enseñar el flujo de comunicación desde la app hasta el backend que porcesará y almacenará los datos del formulario. Para el manejo de servidores HTTP utilizaremos [ZENServer](https://github.com/soyjavi/zen-server) que se caracteriza por ser ligero en cuanto a dependencias.
+Este ejemplo pretende enseñar el flujo de comunicación desde la app hasta el backend que porcesará y almacenará los datos del formulario. Para el manejo de servidores HTTP utilizaremos [ZENserver](https://github.com/soyjavi/zen-server) que se caracteriza por ser ligero en cuanto a dependencias.
 
-Para utilizar ZENServer lo instalamos de la siguiente manera:
+Para utilizar ZENserver lo instalamos de la siguiente manera:
 
 ```bash
 $ npm install zenserver --save
 ```
 
-#### 3.2.1. ZENServer
+#### 3.2.1. ZENserver
 Nuestro pequeño backend tendrá una API para guardar y devolver los contactos y utilizaremos MongoDB para la persistencia de los datos.
 
-Así, siguiendo la estructura de fichero que maneja ZENServer vamos a añadir a nuestro proyecto los siguiente ficheros y directorios:
+Así, siguiendo la estructura de fichero que maneja ZENserver vamos a añadir a nuestro proyecto los siguiente ficheros y directorios:
 
 ```
 .
@@ -220,7 +220,7 @@ headers:
     - request-id
     - response-time
 ```
-Para saber más sobre ZENServer, no olvides consultar su [documentación](https://github.com/soyjavi/zen-server/tree/master/documentation/ES) ;)
+Para saber más sobre ZENserver, no olvides consultar su [documentación](https://github.com/soyjavi/zen-server/tree/master/documentation/ES) ;)
 
 Siguiendo con la configuración de los demás ficheros, nos queda establecer los datos del entorno dev. Así, *dev.yml* contiene la siguiente información:
 
@@ -362,3 +362,58 @@ Recordemos que la *Molecule List* está suscrita a los eventos de **create**, **
         __.Entity.Contact.create value.contact
         Atoms.Url.path "contact/list"
 ```
+![image](assets/img/screen-14.png)
+
+#### 3.3.3. Callbacks personalizados
+Cuando volvemos al formulario a añadir un nuevo contacto nos damos cuenta que los valores del anterior singuen ahí. Para limpiar el formulario vamos a hacer algunos cambios en el yaml y por consiguiente el coffee.
+
+Cuando hemos diseñado la app desde el IDE habíamos asignado un *path* a los botones de navegación. El de *add-user* nos llevaba a *contact/form*. Ahora lo que haremos será eliminar el atributo path y añadiremos un callback personalizado para poder limpiar el formulario cuando volvamos a el:
+
+```yaml
+...
+  - Molecule.Navigation:
+      style: right
+      children:
+        - Atom.Button:
+            events:
+              - touch
+            icon: add-user
+            callbacks:
+              - onAdd
+...
+```
+Otro factor importante a tener en cuenta es que gracias a las IDs podemos acceder a los elementos de manera directa. Para poder acceder a la *molecule form* y llamar al método *clean()* debemos asignar una ID (en este caso la hemos llamado *new*) a *la molecule*: 
+
+```yaml
+  - Organism.Section:
+      id: form
+      style: padding
+      children:
+        - Molecule.Form:
+            id: new
+            events:
+              - submit
+            children:
+              - Atom.Input:
+                  type: text
+                  name: name
+                  placeholder: Name...
+              - Atom.Input:
+                  type: number
+                  placeholder: Phone Number...
+                  name: phone
+              - Atom.Button:
+                  events:
+                    - touch
+                  style: fluid accept
+                  text: Save
+```
+
+Ahora, en el coffee podemos recoger el callback donde haremos la transición y limpiaremos el formulario:
+
+```coffee
+  onAdd: (event, dispatcher, hierarchy...) ->
+    @form.new.clean()
+    Atoms.Url.path "contact/form"
+```
+
