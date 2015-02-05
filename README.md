@@ -102,7 +102,7 @@ En este momento ya podemos arrancar nuestra aplicación. Pero antes, debemos ins
 $ npm install
 $ bower install
 ```
-Ahora compilamos fichero con gulp y levantamos un servidor:
+Ahora compilamos los fichero con gulp y levantamos un servidor:
 
 ```bash
 $ gulp init
@@ -112,5 +112,44 @@ $ gulp
 Al ejecutar el comando `gulp` se nos levantará un server en el puerto 8000. Comprobemos que tal se nos ve la app:
 
 ![image](assets/img/screen-10.png)
+
+## 3. Code
+Es momento de interactuar con el scaffod y el coffee. Desde nuestro editor de código, vayamos a la carpeta **Ormanisms**. Al haber creado un único organismo *contact* vemos que solamente tenemos un fichero yaml que contiene el scaffold y el coffee que tendrá la lógica.
+
+### 3.1. Coffee
+
+```coffee
+class Atoms.Organism.Contact extends Atoms.Organism.Article
+
+  @scaffold "assets/scaffold/contact.json"
+
+  # -- Children bubble events --------------------------------------------------
+  onButtonTouch: (event, dispatcher, hierarchy...) ->
+    # Your code...
+
+  onFormSubmit: (event, dispatcher, hierarchy...) ->
+    # Your code...
+
+new Atoms.Organism.Contact()
+```
+
+El fichero coffee viene con dos funciones declaradas. Esto es porque hemos dejado el *seletec* del atributo **events** activado en los tres elementos y el nombre por defecto que le asigna Atoms cuando no personalizamos el callback es *onElementEvent*:
+
+![image](assets/img/screen-11.png)
+
+#### 3.1.1. Capturando el evento
+Te invito a que pongas logs en la función *onFormSubmit* y veas qué nos llega al hacer click en **Save** en *event*, *dispatcher*, *hierarchy*.
+
+Si los analizas verás que lo elementos hablan por si solo pero te confirmo que *hierarchy* te dice por qué "padres" pasa el evento.
+
+Para recuperar los datos del formulario, utiliza *dispatcher.value()*:
+
+ ```coffee
+  onFormSubmit: (event, dispatcher, hierarchy...) ->
+    console.log ">>", dispatcher.value()
+ ```
+
+![image](assets/img/screen-12.png)
+
 
 
