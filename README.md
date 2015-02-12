@@ -2,6 +2,8 @@
 
 En este ejemplo vamos a construir el esqueleto de la app desde el [IDE](http://atoms.tapquo.com) e implementar una API REST con **MongoDB** y **Node.js** utilizando [ZEN-server](https://github.com/soyjavi/zen-server).
 
+*Cualquier duda o sugerencia no dudéis en contactar ;-)*
+
 
 - [Nuevo proyecto](#a.1)
 - [Diseño](#a.2)
