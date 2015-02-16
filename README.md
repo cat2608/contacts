@@ -23,6 +23,7 @@ En este ejemplo vamos a construir el esqueleto de la app desde el [IDE](http://a
     - [Entity](#a.3.3.2)
     - [Callbacks personalizados](#a.3.3.3)
     - [Cargando datos](#a.3.3.4)
+    - [Modificando elementos](#a.3.3.5)
 
 <a name="a.1"/>
 ## 1. Nuevo proyecto
@@ -264,6 +265,7 @@ Siguiendo con la configuración de los demás ficheros, nos queda establecer los
 host    : localhost
 port    : 8888
 timezone: Europe/Amsterdam
+timeout : 6000
 
 # -- Services ------------------------------------------------------------------
 mongo:
@@ -459,7 +461,7 @@ Ahora, en el coffee podemos recoger el callback donde haremos la transición y l
 
 <a name="a.3.3.4"/>
 #### 3.3.4. Cargando datos
-Para listar todos los elementos que hemos guardado, vamos a añadir una llamada desde *app.coffee* a un nuevo método llamado **fecth** declarado en el *Organism.Contact*:
+Para listar todos los elementos que hemos guardado, vamos a añadir una llamada desde *app.coffee* a un nuevo método llamado **fetch** declarado en el *Organism.Contact*:
 
 *app.coffee*
 
@@ -484,3 +486,34 @@ Atoms.$ ->
       __.Entity.Contact.create contact for contact in (value.contacts or [])
 
 ```
+
+Ahora la aplicación listará los contactos almacenados desde el arranque:
+
+![image](assets/img/screen-15.png)
+
+<a name="a.3.3.5"/>
+#### 3.3.5. Modificando elementos
+
+Pasemos ahora a hacer alguna modificaciones en el *yaml* para añadir y mejorar los elementos de nuestra app.
+
+Por un lado, podemos ayudarnos del atributo `required` en los *inputs* para garantizar que el formulario solamente se va a ejecutar si los campos están completados:
+
+```yaml
+...
+  children:
+    - Atom.Input:
+        type: text
+        name: name
+        placeholder: Name...
+        required: true
+    - Atom.Input:
+        type: number
+        placeholder: Phone Number...
+        name: phone
+        required: true
+```
+
+Gracias al `required`, el usuario verá resaltado los campos que tiene que ser completados antes del envío del formulario:
+
+![image](assets/img/screen-16.png)
+

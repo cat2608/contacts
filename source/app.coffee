@@ -6,4 +6,4 @@ Atoms.$ ->
   console.log "------------------------------------------------------------"
 
   Atoms.Url.path "contact/list"
-  Appnima?.key = ""
+  __.Article.Contact.fetch()

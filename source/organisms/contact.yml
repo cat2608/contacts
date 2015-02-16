@@ -45,10 +45,12 @@ children:
                   type: text
                   name: name
                   placeholder: Name...
+                  required: true
               - Atom.Input:
                   type: number
                   placeholder: Phone Number...
                   name: phone
+                  required: true
               - Atom.Button:
                   events:
                     - touch
