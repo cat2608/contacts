@@ -1,8 +1,8 @@
 {
-    "name": "contacts",
-    "dependencies": {
-        "atoms" : "*",
-        "atoms-icons" : "*",
-        "hope" : "*"
-    }
+  "name": "contacts",
+  "dependencies": {
+    "atoms"       : "*",
+    "atoms-icons" : "*",
+    "hope"        : "*"
+  }
 }
