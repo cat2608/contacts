@@ -517,3 +517,19 @@ Gracias al `required`, el usuario verá resaltado los campos que tiene que ser c
 
 ![image](assets/img/screen-16.png)
 
+Otro elemento interesante para insertar es la **Molecule.Search** en la la *Section* donde tenemos la lista. Par insetar cualquier elemento basta con declararlo en el *yaml*, eso si, recuerda que cada organismo, molecula y átomo tiene unos elementos permitidos:
+
+
+```yaml
+  - Organism.Section:
+      id: list
+      children:
+        - Molecule.Search:
+            id: search
+...
+```
+
+El resultado inmediato es el que se ven en la siguiente image:
+
+![image](assets/img/screen-17.png)
+

@@ -25,6 +25,8 @@ children:
   - Organism.Section:
       id: list
       children:
+        - Molecule.Search:
+            id: search
         - Molecule.List:
             bind:
               entity: __.Entity.Contact
