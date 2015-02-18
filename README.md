@@ -487,7 +487,7 @@ Atoms.$ ->
 
 ```
 
-Ahora la aplicación listará los contactos almacenados desde el arranque:
+Gracias al método **create** sobre la *Entity.Contact* la aplicación lista los contactos almacenados desde el arranque:
 
 ![image](assets/img/screen-15.png)
 
@@ -498,6 +498,7 @@ Pasemos ahora a hacer alguna modificaciones en el *yaml* para añadir y mejorar 
 
 Por un lado, podemos ayudarnos del atributo `required` en los *inputs* para garantizar que el formulario solamente se va a ejecutar si los campos están completados:
 
+*contact.yml*
 ```yaml
 ...
   children:
@@ -517,7 +518,7 @@ Gracias al `required`, el usuario verá resaltado los campos que tiene que ser c
 
 ![image](assets/img/screen-16.png)
 
-Otro elemento interesante para insertar es la **Molecule.Search** en la la *Section* donde tenemos la lista. Par insetar cualquier elemento basta con declararlo en el *yaml*, eso si, recuerda que cada organismo, molecula y átomo tiene unos elementos permitidos:
+Otro elemento interesante para insertar es la **Molecule.Search** en la la *Section* donde tenemos la lista. Par insetar cualquier elemento basta con declararlo en el *yaml*, eso si, recuerda que cada organismo, molecula y átomo tiene unos elementos permitidos. Te invito a que revises el core del *[Organism.Section](https://github.com/tapquo/atoms-app/blob/master/organism/section.coffee)* para comprobar los elemetos disponibles.
 
 
 ```yaml
