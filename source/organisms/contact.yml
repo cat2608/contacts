@@ -27,7 +27,11 @@ children:
       children:
         - Molecule.Search:
             id: search
+            events:
+              - change
+              - submit
         - Molecule.List:
+            id: contacts
             bind:
               entity: __.Entity.Contact
               atom: Atom.Li

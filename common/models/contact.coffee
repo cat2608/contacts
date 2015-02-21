@@ -23,7 +23,7 @@ Contact.statics.register = (parameters) ->
 
 Contact.statics.search = (filter) ->
   promise = new Hope.Promise()
-  @find(filter).exec (error, value) -> promise.done error, value
+  @find(filter).sort("name").exec (error, value) -> promise.done error, value
   promise
 
 # -- Static methods ------------------------------------------------------------

@@ -21,5 +21,16 @@ class Atoms.Organism.Contact extends Atoms.Organism.Article
         __.Entity.Contact.create value.contact
         Atoms.Url.path "contact/list"
 
+  onSearchChange: (event, dispatcher, hierarchy...) ->
+    contact = dispatcher.value()
+    if contact
+      @list.contacts.select (entity) -> entity if entity.name.match contact
+    else
+      @list.contacts.all()
+
+  onSearchSubmit: (event, dispatcher, hierarchy...) ->
+    console.log @list.contacts
+    @list.contacts.findBy "name", dispatcher.value()
+
 
 new Atoms.Organism.Contact()

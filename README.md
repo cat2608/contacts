@@ -18,7 +18,7 @@ En este ejemplo vamos a construir el esqueleto de la app desde el [IDE](http://a
   - [Backend](#a.3.2.)
     - [ZENserver](#a.3.2.1)
     - [API y Modelo](#a.3.2.2)
-- [Vuelta al front](#a.3.3)
+  - [Vuelta al front](#a.3.3)
     - [Enviando los datos al servidor](#a.3.3.1)
     - [Entity](#a.3.3.2)
     - [Callbacks personalizados](#a.3.3.3)
@@ -406,6 +406,8 @@ Recordemos que la *Molecule List* está suscrita a los eventos de **create**, **
 ![image](assets/img/screen-14.png)
 
 <a name="a.3.3.3"/>
+
+
 #### 3.3.3. Callbacks personalizados
 Cuando volvemos al formulario para añadir un nuevo contacto nos damos cuenta que los valores del anterior singuen ahí. Para limpiar el formulario vamos a hacer algunos cambios en el yaml y por consiguiente el coffee.
 
@@ -518,7 +520,7 @@ Gracias al `required`, el usuario verá resaltado los campos que tiene que ser c
 
 ![image](assets/img/screen-16.png)
 
-Otro elemento interesante para insertar es la **Molecule.Search** en la la *Section* donde tenemos la lista. Par insetar cualquier elemento basta con declararlo en el *yaml*, eso si, recuerda que cada organismo, molecula y átomo tiene unos elementos permitidos. Te invito a que revises el core del *[Organism.Section](https://github.com/tapquo/atoms-app/blob/master/organism/section.coffee)* para comprobar los elemetos disponibles.
+Otro elemento interesante para insertar es la **Molecule.Search** en la *Section* donde tenemos la lista. Para insetar cualquier elemento basta con declararlo en el *yaml*, eso si, recuerda que cada organismo, molecula y átomo tiene unos elementos permitidos. Te invito a que revises el core del *[Organism.Section](https://github.com/tapquo/atoms-app/blob/master/organism/section.coffee)* para comprobar los elemetos disponibles.
 
 
 ```yaml
@@ -534,3 +536,50 @@ El resultado inmediato es el que se ven en la siguiente image:
 
 ![image](assets/img/screen-17.png)
 
+Para hacer funcionar la molécula debemos recordar que al declar elementos en *Atoms*, se crean métodos directamente asociados al nombre del elemento y evento. Por ello, en este caso, al haber insertado una *Molecule.Search* podemos declarar en el *coffee* el método **onSearchSubmit** y así recoger lo que insertemos en el input:
+
+```coffee
+  onSearchSubmit: (event, dispatcher, hierarchy...) ->
+    console.log "onSearchSubmit", dispatcher.value()
+```
+
+Nos podemos ayudar el método **findBy** definido en la *Molecule.List* para recoger la coincidencia del input. Únicamente necesitamos definir una `id` en la molécula:
+
+```yaml
+  - Molecule.List:
+      id: contacts
+      bind:
+        ...
+```
+
+Ahora ya somos capaces de acceder a los métodos de la *Molecule.List*:
+
+```coffee
+  onSearchSubmit: (event, dispatcher, hierarchy...) ->
+    @list.contacts.findBy "name", dispatcher.value()
+```
+
+![image](assets/img/screen-19.png)
+
+De todas formas, es mucho más interesante que el filtro se vaya ejecutando mientras escribimos en el input. Para ello vamos a utilizar el evento **change** de la *Molecule.List*. Por lo tanto, haz las siguientes modificaciones sobre el *yaml*:
+
+```yaml
+  - Molecule.Search:
+      id: search
+      events:
+        - change
+        - submit
+```
+
+A estas alturas ya sabrás cuál es el nombre del método que debemos declarar en el coffee para recoger el evento `change`, ¿no? :)
+
+```coffee
+  onSearchChange: (event, dispatcher, hierarchy...) ->
+    contact = dispatcher.value()
+    if contact
+      @list.contacts.select (entity) -> entity if entity.name.match contact
+    else
+      @list.contacts.all()
+```
+
+La *Molecule.List* dispone del método **select** que te devuelve las entidades actualmente creadas.
