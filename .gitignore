@@ -1,4 +1,6 @@
 bower_components/*
+firewall/*
+monitor/*
 node_modules/*
 www/assets/*
 zen.error.json
